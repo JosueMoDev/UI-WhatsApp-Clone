@@ -12,13 +12,15 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import StatusScreen from '../screens/StatusScreen';
+import CallsScreen from '../screens/CallsScreen';
+import CameraScreen from '../screens/CameraScreen';
+import ChatsScreen from '../screens/CallsScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
-import { Ionicons} from '@expo/vector-icons'
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons'
+
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
@@ -38,7 +40,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Editar" component={BottomTabNavigator} options={{
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{
         headerShown: false,
       }}/>
     </Stack.Navigator>
@@ -56,39 +58,78 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Status"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
+      
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        name="Status"
+        component={StatusScreen}
+        options={{
+          title: 'Status',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 40,
+          },
+          headerTitleAlign:'left',
+          tabBarIcon: ({ color }) => <Ionicons name="md-heart-circle-outline" size={24} color={color} />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Calls"
+        component={CallsScreen}
+        options={({ navigation }: RootTabScreenProps<'Calls'>) => ({
+          title: 'Calls',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 40,
+          },
+          headerTitleAlign:'left',
+          tabBarIcon: ({ color }) => <Ionicons name="md-call" size={24} color={color } />,
+
+        })}
+      />
+
+      <BottomTab.Screen
+        name="Camera"
+        component={CameraScreen}
+        options={{
+          tabBarIcon: ({ color }) => <FontAwesome5 name="camera" size={24}  color={color} />,
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Chats"
+        component={ChatsScreen}
+        options={({ navigation }: RootTabScreenProps<'Chats'>) => ({
           title: 'Chats',
           headerTitleStyle: {
             fontWeight: 'bold',
             fontSize: 40,
           },
           headerTitleAlign:'left',
-          tabBarIcon: ({ color }) => <Ionicons name="ios-chatbubbles-sharp" size={24} color={color } />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-            </Pressable>
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="chatbubbles-sharp" size={24} color={color } />,
+
         })}
       />
+
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
-        options={{
-          title: 'Configurations',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
+        name="Settings"
+        component={SettingsScreen}
+        options={({ navigation }: RootTabScreenProps<'Settings'>) => ({
+          title: 'Settings',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 40,
+          },
+          headerTitleAlign:'left',
+          tabBarIcon: ({ color }) => <Ionicons name="md-settings-sharp" size={24} color={color } />,
+
+        })}
       />
+
     </BottomTab.Navigator>
   );
 }
